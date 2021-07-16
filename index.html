@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Комплексные числа</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <p>Комплксное число имеет вид: z = a + i*b</p>
+    <div class="form">
+        <form action="/action/complex.php" name="complex" method="post">
+            <div id="number1">
+                <p>Введите комплексное 1 число: z = <input type="number" name="a_1" placeholder="a"> + i * <input type="number" name="b_1" placeholder="b">
+            </div>
+            <div id="number2">
+                <p>Введите комплексное 1 число: z = <input type="number" name="a_2" placeholder="a"> + i * <input type="number" name="b_2" placeholder="b">
+            </div>
+            <select name="operation">
+                <option value="complicate">+</option>
+                <option value="subtract">-</option>
+                <option value="divide">/</option>
+                <option value="multiply">*</option>
+            </select>
+            <button type="submit">Высчитать</button>
+        </form>
+    </div>
+    <div id="result_wrapper" style="display: none">
+        <p>Резудьтат операции: <span id="result"></span></p>
+    </div>
+    <script>
+        $('button[type=submit]').on('click', function() {
+            event.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "action/complex.php",
+                dataType: 'json',
+                data: {
+                    a_1: $('input[name="a_1"]').val(),
+                    b_1: $('input[name="b_1"]').val(),
+                    a_2: $('input[name="a_2"]').val(),
+                    b_2: $('input[name="b_2"]').val(),
+                    operation: $('select[name="operation"]').val(),
+                },
+                success: function(msg) {
+                    $("#result_wrapper").show();
+                    $("#result").text(msg["a"]+"+("+msg["b"]+")i");
+                },
+            });
+        });
+    </script>
+</body>
+</html>
